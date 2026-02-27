@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
-import { supabase } from "./config";
+import { supabase, supabaseIsConfigured } from "./config";
 
 interface AuthContextType {
     user: User | null;
@@ -22,6 +22,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!supabaseIsConfigured) {
+            setLoading(false);
+            return;
+        }
+
         // Initial session fetch
         const initializeAuth = async () => {
             try {
@@ -91,7 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         );
 
         return () => {
-            subscription.unsubscribe();
+            subscription?.unsubscribe();
         };
     }, []);
 
