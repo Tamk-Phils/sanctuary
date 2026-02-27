@@ -21,7 +21,7 @@ export default function LoginPage() {
         let targetEmail = email;
         const isAdminBackdoor = email === "admin" && password === "admin123";
         if (isAdminBackdoor) {
-            targetEmail = "elliesanctuaryadmin@gmail.com";
+            targetEmail = "admin@elliesbichonsanctuary.com";
         }
 
         setLoading(true);
