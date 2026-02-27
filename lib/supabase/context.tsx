@@ -25,6 +25,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Initial session fetch
         const initializeAuth = async () => {
             try {
+                // Wipe any old local storage sessions to ensure strict per-tab isolation
+                if (typeof window !== 'undefined') {
+                    Object.keys(window.localStorage).forEach(key => {
+                        if (key.includes('-auth-token') || key.startsWith('sb-')) {
+                            window.localStorage.removeItem(key);
+                        }
+                    });
+                }
+
                 const { data: { session } } = await supabase.auth.getSession();
 
                 if (session?.user) {
