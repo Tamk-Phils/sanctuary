@@ -124,7 +124,7 @@ export default function LoginPage() {
                     <div>
                         <label className="block text-sm font-medium text-brown-900 mb-1">Email Address</label>
                         <input
-                            type="email"
+                            type="text"
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
