@@ -172,6 +172,23 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
                 "/admin/requests"
             );
 
+            // Send Transactional Emails (Confirmation to User & Alert to Admin)
+            try {
+                await fetch("/api/send-email", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        type: "adoption_request",
+                        userEmail: email,
+                        userName: `${firstName} ${lastName}`,
+                        puppyName: puppy.name,
+                        depositAmount: puppy.deposit_amount,
+                    }),
+                });
+            } catch (emailErr) {
+                console.error("Non-critical error sending confirmation email:", emailErr);
+            }
+
             setSuccess(true);
         } catch (error: any) {
             console.error("CRITICAL ERROR submitting request:", error);

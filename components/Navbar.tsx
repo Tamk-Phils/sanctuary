@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useAuth } from "@/lib/supabase/context";
-import { Bone, Menu, X, Home, Dog, Info, HelpCircle, MessageCircle, LayoutDashboard, LogOut, User, Heart, Sparkles } from "lucide-react";
+import { Bone, Menu, X, Home, Dog, Info, HelpCircle, MessageCircle, LayoutDashboard, LogOut, User, Heart, Sparkles, Mail } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/config";
 import { usePathname } from "next/navigation";
@@ -40,6 +40,7 @@ export default function Navbar() {
         { name: "About", href: "/about", icon: Info },
         { name: "How It Works", href: "/how-it-works", icon: Sparkles },
         { name: "FAQ", href: "/faq", icon: HelpCircle },
+        { name: "Contact", href: "/contact", icon: Mail },
     ];
 
     const isActive = (path: string) => pathname === path;

@@ -24,6 +24,7 @@ export default function Footer() {
                         &copy; {new Date().getFullYear()} Ellie's Bichon Frise Sanctuary. All rights reserved.
                     </div>
                     <div className="flex gap-6">
+                        <a href="/contact" className="hover:text-white transition-colors">Contact</a>
                         <a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a>
                         <a href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</a>
                     </div>
