@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/config";
 import Link from "next/link";
-import { CopyPlus, Edit2, Trash2 } from "lucide-react";
+import { CopyPlus, Edit2, Trash2, Dog } from "lucide-react";
 
 export default function AdminPuppiesList() {
     const [puppies, setPuppies] = useState<any[]>([]);
@@ -68,11 +68,18 @@ export default function AdminPuppiesList() {
                 <ul className="divide-y divide-cream-200">
                     {puppies.map(pup => (
                         <li key={pup.id} className="p-6 flex flex-col md:flex-row items-center gap-6 hover:bg-cream-50 transition-colors">
-                            <div className="w-20 h-20 rounded-2xl bg-cream-100 overflow-hidden flex-shrink-0 border border-cream-200">
-                                {pup.puppy_images?.[0] ? (
-                                    <img src={pup.puppy_images[0]} alt={pup.name} className="w-full h-full object-cover" />
+                            <div className="w-20 h-20 rounded-2xl bg-cream-100 overflow-hidden flex-shrink-0 border border-cream-200 relative">
+                                {pup.puppy_images && pup.puppy_images.length > 0 ? (
+                                    <img
+                                        src={pup.puppy_images[0].startsWith('http') ? pup.puppy_images[0] : (pup.puppy_images[0].startsWith('/') ? pup.puppy_images[0] : `/${pup.puppy_images[0]}`)}
+                                        alt={pup.name}
+                                        className="w-full h-full object-cover"
+                                    />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-brown-800 text-xs font-bold opacity-50">No Img</div>
+                                    <div className="w-full h-full flex flex-col items-center justify-center text-brown-400 text-[10px] font-bold">
+                                        <Dog className="h-5 w-5 mb-1 opacity-20" />
+                                        <span>NO IMAGE</span>
+                                    </div>
                                 )}
                             </div>
                             <div className="flex-1 text-center md:text-left">

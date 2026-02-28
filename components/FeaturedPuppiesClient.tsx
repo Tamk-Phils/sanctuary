@@ -1,8 +1,10 @@
 "use client";
 
+import { motion, Variants } from "framer-motion";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, Variants } from "framer-motion";
+import { supabase } from "@/lib/supabase/config";
 
 interface Puppy {
     id: string;
@@ -29,12 +31,36 @@ const staggerContainer: Variants = {
 };
 
 export default function FeaturedPuppiesClient({ initialPuppies }: { initialPuppies: Puppy[] }) {
+    const [puppies, setPuppies] = useState<Puppy[]>(initialPuppies);
+
+    useEffect(() => {
+        const subscription = supabase
+            .channel('public:featured_puppies')
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'puppies',
+            }, async () => {
+                const { data } = await supabase
+                    .from("puppies")
+                    .select("*")
+                    .eq("status", "available")
+                    .limit(3);
+                if (data) setPuppies(data as Puppy[]);
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(subscription);
+        };
+    }, []);
+
     return (
         <motion.div
             variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-            {initialPuppies.map((pup) => (
+            {puppies.map((pup) => (
                 <motion.div variants={fadeIn} key={pup.id}>
                     <Link
                         href={`/puppies/${pup.id}`}

@@ -25,9 +25,9 @@ export default function HomeHeroClient() {
         <section className="relative bg-sand-600 pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden flex items-center min-h-[90vh]">
             <motion.div
                 initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 0.3, scale: 1 }}
+                animate={{ opacity: 0.8, scale: 1 }}
                 transition={{ duration: 1.5 }}
-                className="absolute inset-0 z-0 bg-black/60"
+                className="absolute inset-0 z-0 bg-black/40"
             >
                 <Image
                     src="/images/hero-bg.png"
@@ -35,7 +35,7 @@ export default function HomeHeroClient() {
                     fill
                     priority
                     fetchPriority="high"
-                    className="object-cover object-center mix-blend-overlay"
+                    className="object-cover object-center"
                 />
             </motion.div>
 
