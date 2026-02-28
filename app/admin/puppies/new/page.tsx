@@ -18,7 +18,8 @@ export default function NewPuppyPage() {
         gender: "Male",
         adoption_fee: "",
         deposit_amount: "",
-        status: "available"
+        status: "available",
+        description: ""
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -55,15 +56,16 @@ export default function NewPuppyPage() {
                 adoption_fee: Number(formData.adoption_fee),
                 deposit_amount: Number(formData.deposit_amount),
                 status: formData.status,
+                description: formData.description,
                 puppy_images: uploadedUrls
             });
 
             if (insertError) throw insertError;
 
             router.push("/admin/puppies");
-        } catch (error) {
-            console.error("Error creating puppy:", error);
-            alert("Failed to create puppy.");
+        } catch (error: any) {
+            console.error("DEBUG - Puppy Creation Error:", error);
+            alert(`Failed to create puppy: ${error.message || "Unknown error"}`);
             setLoading(false);
         }
     };
@@ -111,6 +113,17 @@ export default function NewPuppyPage() {
                             <label className="block text-sm font-bold text-brown-900 mb-1">Required Deposit ($)</label>
                             <input type="number" name="deposit_amount" required value={formData.deposit_amount} onChange={handleChange} className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:ring-2 focus:ring-sand-600 outline-none" placeholder="500" />
                         </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-bold text-brown-900 mb-1">Description (Include parent info, personality, etc.)</label>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:ring-2 focus:ring-sand-600 outline-none min-h-[150px]"
+                            placeholder="Tell us about the puppy's personality, health, and parents..."
+                        ></textarea>
                     </div>
 
                     <div className="pt-4 border-t border-cream-200">

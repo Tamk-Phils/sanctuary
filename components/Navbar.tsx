@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useAuth } from "@/lib/supabase/context";
-import { Bone, Menu, X, Home, Dog, Info, HelpCircle, MessageCircle, LayoutDashboard, LogOut, User, Heart, Sparkles, Mail } from "lucide-react";
+import { Bone, Menu, X, Home, Dog, Info, HelpCircle, MessageCircle, LayoutDashboard, LogOut, User, Heart, Sparkles, Mail, ChevronDown, ShieldCheck, Scissors, Plane } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/config";
 import { usePathname } from "next/navigation";
-
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
@@ -41,6 +40,12 @@ export default function Navbar() {
         { name: "How It Works", href: "/how-it-works", icon: Sparkles },
         { name: "FAQ", href: "/faq", icon: HelpCircle },
         { name: "Contact", href: "/contact", icon: Mail },
+    ];
+
+    const resourceLinks = [
+        { name: "Health Guarantee", href: "/health-guarantee", icon: ShieldCheck },
+        { name: "Care & Training", href: "/care-and-training", icon: Scissors },
+        { name: "Shipping", href: "/shipping", icon: Plane },
     ];
 
     const isActive = (path: string) => pathname === path;
@@ -93,6 +98,32 @@ export default function Navbar() {
                                 </Link>
                             );
                         })}
+
+                        {/* Resources Dropdown */}
+                        <div className="relative group px-1">
+                            <button className="px-4 py-2 rounded-xl text-sm font-bold text-brown-800 hover:text-sand-600 hover:bg-cream-50 flex items-center gap-2 transition-all duration-300">
+                                <Sparkles className="h-4 w-4 text-brown-400 group-hover:text-sand-600" />
+                                Resources
+                                <ChevronDown className="h-3 w-3 opacity-50 group-hover:rotate-180 transition-transform" />
+                            </button>
+                            <div className="absolute top-full left-0 w-64 mt-2 bg-white rounded-2xl shadow-2xl border border-cream-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 p-2">
+                                {resourceLinks.map((link) => {
+                                    const Icon = link.icon;
+                                    return (
+                                        <Link
+                                            key={link.name}
+                                            href={link.href}
+                                            className="flex items-center gap-3 p-3 rounded-xl hover:bg-sand-50 text-brown-800 hover:text-sand-600 transition-colors group/item"
+                                        >
+                                            <div className="p-2 rounded-lg bg-cream-50 group-hover/item:bg-white">
+                                                <Icon className="h-4 w-4 text-brown-400" />
+                                            </div>
+                                            <span className="text-sm font-bold">{link.name}</span>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Desktop Actions */}
@@ -186,6 +217,26 @@ export default function Navbar() {
                                 </Link>
                             );
                         })}
+                    </div>
+
+                    <div className="pt-4 border-t border-cream-200">
+                        <p className="px-4 text-[10px] font-bold text-brown-400 uppercase tracking-widest mb-3">Resources</p>
+                        <div className="grid grid-cols-1 gap-2">
+                            {resourceLinks.map((link) => {
+                                const Icon = link.icon;
+                                return (
+                                    <Link
+                                        key={link.name}
+                                        href={link.href}
+                                        onClick={() => setIsOpen(false)}
+                                        className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-cream-100 text-brown-900 font-bold hover:bg-sand-50 transition-all"
+                                    >
+                                        <Icon className="h-5 w-5 text-sand-500" />
+                                        {link.name}
+                                    </Link>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div className="pt-4 border-t border-cream-200 space-y-3">

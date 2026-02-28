@@ -91,7 +91,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <p className="font-bold text-brown-900">Phone</p>
-                                    <p className="text-brown-800">(555) 123-4567</p>
+                                    <p className="text-brown-800"></p>
                                 </div>
                             </div>
 
@@ -101,7 +101,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <p className="font-bold text-brown-900">Sanctuary</p>
-                                    <p className="text-brown-800">Bichon Lane, Florida, USA</p>
+                                    <p className="text-brown-800"></p>
                                 </div>
                             </div>
                         </div>

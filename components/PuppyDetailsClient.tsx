@@ -13,6 +13,7 @@ interface Puppy {
     adoption_fee: number;
     deposit_amount: number;
     puppy_images: string[];
+    description?: string;
 }
 
 export default function PuppyDetailsClient({ puppy }: { puppy: Puppy }) {
@@ -87,6 +88,15 @@ export default function PuppyDetailsClient({ puppy }: { puppy: Puppy }) {
                     </div>
                 </div>
 
+                {puppy.description && (
+                    <div className="mt-8 border-t border-cream-200 pt-8">
+                        <h2 className="text-sm font-extrabold text-brown-900/40 uppercase tracking-widest mb-3">About this Puppy</h2>
+                        <div className="text-brown-800 leading-relaxed whitespace-pre-wrap font-medium text-lg">
+                            {puppy.description}
+                        </div>
+                    </div>
+                )}
+
                 <div className="border-t border-cream-200 pt-8 mt-8 space-y-4">
                     {puppy.status === "available" ? (
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -115,4 +125,3 @@ export default function PuppyDetailsClient({ puppy }: { puppy: Puppy }) {
         </div>
     );
 }
-

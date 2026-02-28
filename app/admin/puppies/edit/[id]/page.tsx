@@ -19,7 +19,7 @@ export default function EditPuppyPage({ params }: { params: Promise<{ id: string
     const [existingImages, setExistingImages] = useState<string[]>([]);
 
     const [formData, setFormData] = useState({
-        name: "", age: "", gender: "Male", adoption_fee: "", deposit_amount: "", status: "available"
+        name: "", age: "", gender: "Male", adoption_fee: "", deposit_amount: "", status: "available", description: ""
     });
 
 
@@ -41,7 +41,8 @@ export default function EditPuppyPage({ params }: { params: Promise<{ id: string
                         gender: data.gender || "Male",
                         adoption_fee: String(data.adoption_fee || ""),
                         deposit_amount: String(data.deposit_amount || ""),
-                        status: data.status || "available"
+                        status: data.status || "available",
+                        description: data.description || ""
                     });
                     setExistingImages(data.puppy_images || []);
                 }
@@ -94,6 +95,7 @@ export default function EditPuppyPage({ params }: { params: Promise<{ id: string
                     adoption_fee: Number(formData.adoption_fee),
                     deposit_amount: Number(formData.deposit_amount),
                     status: formData.status,
+                    description: formData.description,
                     puppy_images: [...existingImages, ...uploadedUrls]
                 })
                 .eq("id", puppyId);
@@ -151,6 +153,17 @@ export default function EditPuppyPage({ params }: { params: Promise<{ id: string
                             <label className="block text-sm font-bold text-brown-900 mb-1">Deposit ($)</label>
                             <input type="number" name="deposit_amount" required value={formData.deposit_amount} onChange={handleChange} className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:ring-2 focus:ring-sand-600 outline-none" />
                         </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-bold text-brown-900 mb-1">Description</label>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:ring-2 focus:ring-sand-600 outline-none min-h-[150px]"
+                            placeholder="Tell us about the puppy's personality, health, and parents..."
+                        ></textarea>
                     </div>
 
                     <div className="pt-4 border-t border-cream-200">

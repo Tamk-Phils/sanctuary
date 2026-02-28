@@ -34,6 +34,7 @@ export default function HomeHeroClient() {
                     alt="Happy Bichon Frise puppy looking bright and joyful"
                     fill
                     priority
+                    loading="eager"
                     fetchPriority="high"
                     className="object-cover object-center"
                 />
@@ -101,6 +102,8 @@ export default function HomeHeroClient() {
                                 src="/images/hero-bg.png"
                                 alt="Adorable white Bichon sitting"
                                 fill
+                                priority
+                                loading="eager"
                                 className="object-cover"
                             />
                         </div>

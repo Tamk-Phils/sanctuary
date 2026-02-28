@@ -23,8 +23,11 @@ export default function Footer() {
                     <div>
                         &copy; {new Date().getFullYear()} Ellie's Bichon Frise Sanctuary. All rights reserved.
                     </div>
-                    <div className="flex gap-6">
+                    <div className="flex flex-wrap justify-center md:justify-end gap-6">
                         <a href="/contact" className="hover:text-white transition-colors">Contact</a>
+                        <a href="/health-guarantee" className="hover:text-white transition-colors">Health Guarantee</a>
+                        <a href="/care-and-training" className="hover:text-white transition-colors">Care & Training</a>
+                        <a href="/shipping" className="hover:text-white transition-colors">Shipping</a>
                         <a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a>
                         <a href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</a>
                     </div>
