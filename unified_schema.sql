@@ -126,8 +126,25 @@ CREATE POLICY "Enable all access for everyone" ON public.push_subscriptions FOR 
 
 -- 11. ENABLE REALTIME
 -- This allows the app to listen for changes automatically
-ALTER PUBLICATION supabase_realtime ADD TABLE public.messages;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.conversations;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.adoption_requests;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.push_subscriptions;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'messages') THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.messages;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'conversations') THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.conversations;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'notifications') THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'adoption_requests') THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.adoption_requests;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'push_subscriptions') THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.push_subscriptions;
+    END IF;
+END $$;
