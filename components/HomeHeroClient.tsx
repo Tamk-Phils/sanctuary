@@ -29,14 +29,10 @@ export default function HomeHeroClient() {
                 transition={{ duration: 1.5 }}
                 className="absolute inset-0 z-0 bg-black/40"
             >
-                <Image
+                <img
                     src="/images/hero-bg.png"
                     alt="Happy Bichon Frise puppy looking bright and joyful"
-                    fill
-                    priority
-                    loading="eager"
-                    fetchPriority="high"
-                    className="object-cover object-center"
+                    className="absolute inset-0 w-full h-full object-cover object-center"
                 />
             </motion.div>
 
@@ -98,13 +94,10 @@ export default function HomeHeroClient() {
                         className="bg-white p-4 rounded-3xl shadow-2xl rotate-3 transform hover:rotate-0 transition-transform duration-500 max-w-md mx-auto relative border-[8px] border-white ring-1 ring-cream-200"
                     >
                         <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
-                            <Image
+                            <img
                                 src="/images/hero-bg.png"
                                 alt="Adorable white Bichon sitting"
-                                fill
-                                priority
-                                loading="eager"
-                                className="object-cover"
+                                className="w-full h-full object-cover"
                             />
                         </div>
                         <div className="absolute -bottom-6 -left-6 bg-sand-600 text-white p-4 rounded-2xl shadow-xl flex items-center gap-3">

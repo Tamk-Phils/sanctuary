@@ -25,14 +25,10 @@ export default function PuppyDetailsClient({ puppy }: { puppy: Puppy }) {
             <div className="space-y-4">
                 <div className="aspect-[4/3] bg-cream-100 rounded-2xl overflow-hidden border border-cream-200 relative">
                     {mainImg ? (
-                        <Image
+                        <img
                             src={mainImg}
                             alt={puppy.name}
-                            fill
-                            priority
-                            fetchPriority="high"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                            className="object-cover"
+                            className="absolute inset-0 w-full h-full object-cover"
                         />
                     ) : (
                         <div className="w-full h-full flex justify-center items-center text-brown-800 opacity-50">No Image Available</div>
@@ -47,12 +43,10 @@ export default function PuppyDetailsClient({ puppy }: { puppy: Puppy }) {
                                 aria-label={`View puppy image ${idx + 1}`}
                                 className={`aspect-square rounded-xl overflow-hidden border-2 transition-colors relative ${mainImg === img ? 'border-sand-600' : 'border-transparent hover:border-cream-200'}`}
                             >
-                                <Image
+                                <img
                                     src={img}
                                     alt={`${puppy.name} thumbnail ${idx}`}
-                                    fill
-                                    sizes="100px"
-                                    className="object-cover"
+                                    className="absolute inset-0 w-full h-full object-cover"
                                 />
                             </button>
                         ))}

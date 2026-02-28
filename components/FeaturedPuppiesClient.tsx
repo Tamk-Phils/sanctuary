@@ -73,12 +73,10 @@ export default function FeaturedPuppiesClient({ initialPuppies }: { initialPuppi
                                     {pup.gender}
                                 </div>
                                 {pup.puppy_images && pup.puppy_images.length > 0 ? (
-                                    <Image
+                                    <img
                                         src={pup.puppy_images[0]}
                                         alt={pup.name}
-                                        fill
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     />
                                 ) : (
                                     <div className="w-full h-full flex justify-center items-center text-brown-800 opacity-50 bg-cream-50">
