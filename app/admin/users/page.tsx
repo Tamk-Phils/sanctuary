@@ -5,12 +5,51 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/config";
 import { useAuth } from "@/lib/supabase/context";
-import { Shield, ShieldAlert, User, Mail, Calendar, Trash2 } from "lucide-react";
+import { Shield, ShieldAlert, User, Mail, Calendar, Trash2, MessageSquare } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function AdminUsersPage() {
     const { user, role } = useAuth();
+    const router = useRouter();
     const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const startChat = async (targetUserId: string, targetUserEmail: string) => {
+        try {
+            // Check if conversation already exists
+            const { data: existing, error: fetchError } = await supabase
+                .from("conversations")
+                .select("id")
+                .eq("user_id", targetUserId)
+                .single();
+
+            if (fetchError && fetchError.code !== "PGRST116") throw fetchError;
+
+            let conversationId = existing?.id;
+
+            if (!conversationId) {
+                // Create new conversation
+                const { data: nuevo, error: createError } = await supabase
+                    .from("conversations")
+                    .insert({
+                        user_id: targetUserId,
+                        user_email: targetUserEmail,
+                        last_message: "Chat started by admin",
+                    })
+                    .select("id")
+                    .single();
+
+                if (createError) throw createError;
+                conversationId = nuevo.id;
+            }
+
+            // Redirect to admin chat with this conversation
+            router.push(`/admin/chat?id=${conversationId}`);
+        } catch (error) {
+            console.error("Error starting chat:", error);
+            alert("Failed to start chat.");
+        }
+    };
 
     const deleteUser = async (userId: string, userEmail: string) => {
         if (userId === user?.id) {
@@ -134,6 +173,15 @@ export default function AdminUsersPage() {
                                     </td>
                                     <td className="p-4 text-right">
                                         <div className="flex items-center justify-end gap-2">
+                                            {u.id !== user?.id && (
+                                                <button
+                                                    onClick={() => startChat(u.id, u.email)}
+                                                    className="p-2 text-sand-600 hover:text-sand-700 hover:bg-sand-50 rounded-xl transition-all"
+                                                    title="Start Chat"
+                                                >
+                                                    <MessageSquare className="w-5 h-5" />
+                                                </button>
+                                            )}
                                             <button
                                                 onClick={() => toggleRole(u.id, u.role)}
                                                 className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors border ${u.role === 'admin'

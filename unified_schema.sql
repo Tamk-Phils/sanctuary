@@ -74,7 +74,15 @@ CREATE TABLE IF NOT EXISTS public.messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 6. Ensure all Chat Columns exist (Augmentation)
+-- 6. Push Subscriptions Table
+CREATE TABLE IF NOT EXISTS public.push_subscriptions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+    subscription JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 7. Ensure all Chat Columns exist (Augmentation)
 ALTER TABLE public.conversations 
     ADD COLUMN IF NOT EXISTS user_email TEXT,
     ADD COLUMN IF NOT EXISTS last_message TEXT,
@@ -90,6 +98,7 @@ ALTER TABLE public.adoption_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.push_subscriptions ENABLE ROW LEVEL SECURITY;
 
 -- 10. DEFAULT POLICIES (Test Mode Equivalent)
 -- In a real production app, limit these, but this mimics our Firestore Test Mode behavior
@@ -112,11 +121,13 @@ CREATE POLICY "Enable all access for everyone" ON public.messages FOR ALL USING 
 DROP POLICY IF EXISTS "Enable all access for everyone" ON public.notifications;
 CREATE POLICY "Enable all access for everyone" ON public.notifications FOR ALL USING (true);
 
+DROP POLICY IF EXISTS "Enable all access for everyone" ON public.push_subscriptions;
+CREATE POLICY "Enable all access for everyone" ON public.push_subscriptions FOR ALL USING (true);
+
 -- 11. ENABLE REALTIME
 -- This allows the app to listen for changes automatically
 ALTER PUBLICATION supabase_realtime ADD TABLE public.messages;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.conversations;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.adoption_requests;
-
-
+ALTER PUBLICATION supabase_realtime ADD TABLE public.push_subscriptions;

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase/config";
 import { useAuth } from "@/lib/supabase/context";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { notifyAdmins } from "@/lib/supabase/push";
 
 export default function CheckoutPage({ params }: { params: Promise<{ id: string }> }) {
     const unwrappedParams = use(params);
@@ -163,6 +164,14 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
             console.log("Insert response:", { data, error: insertError });
 
             if (insertError) throw insertError;
+
+            // Notify admins of new request
+            await notifyAdmins(
+                "New Adoption Request",
+                `${firstName} ${lastName} has requested to adopt ${puppy.name}`,
+                "/admin/requests"
+            );
+
             setSuccess(true);
         } catch (error: any) {
             console.error("CRITICAL ERROR submitting request:", error);

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase/config";
 import { useAuth } from "@/lib/supabase/context";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Send } from "lucide-react";
+import { sendPushNotification, notifyAdmins } from "@/lib/supabase/push";
 
 function ChatContent() {
     const { user, loading: authLoading } = useAuth();
@@ -141,6 +142,13 @@ function ChatContent() {
             if (convError) {
                 console.warn("Could not update conversation timestamp, but message was sent:", convError);
             }
+
+            // Notify admins
+            await notifyAdmins(
+                "New message from user",
+                msgText,
+                "/admin/chat"
+            );
         } catch (error: any) {
             console.error("Error sending message:", error);
             alert("Failed to send message: " + (error.message || "Unknown error"));

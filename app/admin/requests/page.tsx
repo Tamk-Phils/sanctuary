@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/config";
 import { CheckCircle, XCircle, Clock, Trash2 } from "lucide-react";
+import { sendPushNotification } from "@/lib/supabase/push";
 
 export default function AdminAdoptionRequests() {
     const [requests, setRequests] = useState<any[]>([]);
@@ -102,6 +103,14 @@ export default function AdminAdoptionRequests() {
                         message: message,
                         read: false
                     });
+
+                    // Also send push notification
+                    await sendPushNotification(
+                        userId,
+                        "Adoption Update",
+                        message,
+                        "/dashboard"
+                    );
                 }
             }
 

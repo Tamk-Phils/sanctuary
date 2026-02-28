@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase/config";
 import { useAuth } from "@/lib/supabase/context";
 import { Send, UserCircle2, Trash2 } from "lucide-react";
+import { sendPushNotification } from "@/lib/supabase/push";
 
 export default function AdminChat() {
     const { user } = useAuth();
@@ -166,6 +167,16 @@ export default function AdminChat() {
 
             if (convError) {
                 console.warn("Could not update conversation timestamp, but message was sent:", convError);
+            }
+
+            // Send push notification to user
+            if (activeConv?.user_id) {
+                await sendPushNotification(
+                    activeConv.user_id,
+                    "New message from Ellie's Sanctuary",
+                    msgText,
+                    "/chat"
+                );
             }
         } catch (error: any) {
             console.error("Error sending message:", error);

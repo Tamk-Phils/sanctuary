@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { supabase, supabaseIsConfigured } from "./config";
+import { registerServiceWorker, subscribeUserToPush } from "./push";
 
 interface AuthContextType {
     user: User | null;
@@ -50,6 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     setRole(newRole);
                     if (typeof window !== 'undefined') {
                         sessionStorage.setItem('user-role', newRole);
+                        // Register SW and attempt push subscription
+                        registerServiceWorker().then(() => {
+                            if (session.user) subscribeUserToPush(session.user.id);
+                        });
                     }
                 } else {
                     if (typeof window !== 'undefined') {
@@ -80,6 +85,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     setRole(newRole);
                     if (typeof window !== 'undefined') {
                         sessionStorage.setItem('user-role', newRole);
+                        // Register SW and attempt push subscription
+                        registerServiceWorker().then(() => {
+                            if (session.user) subscribeUserToPush(session.user.id);
+                        });
                     }
                 } else {
                     setUser(null);
